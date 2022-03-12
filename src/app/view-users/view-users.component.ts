@@ -1,7 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { DataService } from '../services/data.service';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
+import {Subscription} from "rxjs";
 
 export interface UserObject {
   login: string;
@@ -29,10 +30,10 @@ export interface UserObject {
   templateUrl: './view-users.component.html',
   styleUrls: ['./view-users.component.scss']
 })
-export class ViewUsersComponent implements OnInit {
+export class ViewUsersComponent implements OnInit, OnDestroy {
 displayedColumns: string[] = ['id', 'login', 'html_url' ,'avatar_url'];
 dataSource : MatTableDataSource<UserObject>;
-
+private subscription: Subscription = new Subscription();
 
   constructor(private dataService: DataService) {
     this.dataSource = new MatTableDataSource<UserObject>();
@@ -43,7 +44,7 @@ dataSource : MatTableDataSource<UserObject>;
         //   this.dataSource = new MatTableDataSource<UserObject>(data);
         // });
 
-    this.dataService.getUsersBatch(0,5).subscribe(data => {
+   this.subscription = this.dataService.getUsersBatch(0,5).subscribe(data => {
       this.dataSource = new MatTableDataSource<UserObject>(data);
     });
     }
@@ -58,5 +59,9 @@ dataSource : MatTableDataSource<UserObject>;
 
   applyFilter(event: Event): void {
     this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLocaleLowerCase();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
