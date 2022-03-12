@@ -22,4 +22,11 @@ export class DataService {
   getUser(username:string){
     return this.http.get(`${this.apiUrl}/${username}`);
   }
+
+  // <!------------------------------------------------!>
+
+  getGitUsersProfile(since:number,perPage:number){
+    return this.http.get<UserObject[]>(this.apiUrl + '?since=' + since + '&per_page=' + perPage);
+  
+  }
 }

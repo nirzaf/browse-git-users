@@ -36,8 +36,10 @@ displayedColumns: string[] = ['id', 'login', 'html_url' ,'avatar_url'];
 dataSource : MatTableDataSource<UserObject>;
 private subscription: Subscription = new Subscription();
 
+usersList: UserObject[] = [];
 isAutomaticLoadingEnabled:boolean = true;
 loadingInterval:number = 0;
+perPageUsers:number = 10;
 
   constructor(private dataService: DataService) {
     this.dataSource = new MatTableDataSource<UserObject>();
@@ -62,21 +64,37 @@ public ToggleAutomaticLoading(){
        }
      }
       this.dataSource = new MatTableDataSource<UserObject>(data);
+      this.loadUserProfile(); //New Implementation
+   
+    });
+    }
+
+    //New Implementation
+    public loadUserProfile(){
+      let since:any =localStorage.getItem('lastUserID');
+      if(since === null){
+        since = 0;
+      }
+      console.log("Since"+since);
+    this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
+      for(let user of data){
+        let isOdd = Math.abs(user.id % 2) ===1 ? true : false
+        if(isOdd){
+         user.isIdOdd = isOdd;
+        }
+      }
+        this.usersList = data;
+      let lastUserId = data[data.length-1].id.toString();
+      localStorage.setItem('lastUserID',lastUserId);
+      let n = localStorage.getItem('lastUserID');
+      console.log(n);
     });
     }
 
     public loadMore(){
       setTimeout(()=>{
-        this.dataService.getUsersBatch(this.dataSource.data.length,5).subscribe(data => {
-          console.log(data);
-          for(let user of data){
-            let isOdd = Math.abs(user.id % 2) ===1 ? true : false
-            if(isOdd){
-             user.isIdOdd = isOdd;
-            }
-          }
-          this.dataSource.data.push(...data);
-        });
+        this.loadUserProfile();
+       console.log('LOading More');
       },this.loadingInterval);
     }
 
