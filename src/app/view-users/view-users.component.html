@@ -6,7 +6,7 @@
         {{isAutomaticLoadingEnabled ? 'Disable ': 'Enable '}} Automatic Loading
       </button>
     </div>
-    <div class="col-2"><button class="btn btn-sm btn-success">Load next Set</button></div>
+    <div class="col-2"><button class="btn btn-sm btn-success" (click)="loadMore()">Load next Set</button></div>
   </div>
   <hr>
   <mat-form-field [style.width.%]="100" floatLabel="always" style="background-color: cornflowerblue">

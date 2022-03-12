@@ -37,6 +37,7 @@ dataSource : MatTableDataSource<UserObject>;
 private subscription: Subscription = new Subscription();
 
 isAutomaticLoadingEnabled:boolean = true;
+loadingInterval:number = 0;
 
   constructor(private dataService: DataService) {
     this.dataSource = new MatTableDataSource<UserObject>();
@@ -44,7 +45,9 @@ isAutomaticLoadingEnabled:boolean = true;
 
 public ToggleAutomaticLoading(){
   this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
-  console.log(this.isAutomaticLoadingEnabled)
+  if(this.isAutomaticLoadingEnabled===false){
+   this.loadingInterval=3000;
+  }
 }
 
   ngOnInit(): void {
@@ -62,6 +65,21 @@ public ToggleAutomaticLoading(){
      }
       this.dataSource = new MatTableDataSource<UserObject>(data);
     });
+    }
+
+    public loadMore(){
+      setInterval(() => {
+        this.dataService.getUsersBatch(this.dataSource.data.length,5).subscribe(data => {
+          console.log(data);
+          for(let user of data){
+            let isOdd = Math.abs(user.id % 2) ===1 ? true : false
+            if(isOdd){
+              user.isIdOdd = isOdd;
+            }
+          }
+          this.dataSource.data = this.dataSource.data.concat(data);
+        });
+      },this.loadingInterval);
     }
 
 
