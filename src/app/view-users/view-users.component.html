@@ -1,59 +1,17 @@
+
 <div class="container" fxFlex="25%" fxFlex.xs="100%" fxLayoutGap="25px" fxLayout.lt-xs="column">
-  <h2 class="mat-display-1">Browse GitHub Users</h2>
   <div class="row">
-    <div class="col-2">
-      <button class="btn btn-sm" (click)="ToggleAutomaticLoading()" [ngClass]="isAutomaticLoadingEnabled ? 'btn-danger' : 'btn-primary'">
-        {{isAutomaticLoadingEnabled ? 'Disable ': 'Enable '}} Automatic Loading
+    <div class="btn-group" >
+      <button style="margin-right:5px" class="btn btn-primary" (click)="toggleAutomaticLoading()" [ngClass]="isAutomaticLoadingEnabled ? 'btn-danger' : 'btn-primary'">
+        {{isAutomaticLoadingEnabled ? 'Stop': 'Start'}} Auto Loading
       </button>
+      <button style="margin-right:5px" class="btn btn-primary btn-success" (click)="loadMore()">Load next Set</button>
+      <button class="btn btn-sm btn-info" (click)="reset()">Reset</button>
     </div>
-    <div class="col-2"><button class="btn btn-sm btn-success" (click)="loadMore()">Load next Set</button></div>
   </div>
   <hr>
-  <mat-form-field [style.width.%]="100" floatLabel="always" style="background-color: cornflowerblue">
-    <input type="text" placeholder="Search Users" aria-label="Number" matInput (keyup)="applyFilter($event)">
-  </mat-form-field>
-
-  <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="column"  fxLayout.lt-sm="column"   fxLayoutGap="15px">
-
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <!-- Id Column -->
-      <ng-container matColumnDef="id" style="margin-left: 100px">
-        <th mat-header-cell *matHeaderCellDef> User Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
-
-      <!-- Username Column -->
-      <ng-container matColumnDef="login">
-        <th mat-header-cell *matHeaderCellDef > Username </th>
-        <td mat-cell *matCellDef="let element"> {{element.login}} </td>
-      </ng-container>
-
-      <!-- User URL Column -->
-      <ng-container matColumnDef="html_url">
-        <th mat-header-cell *matHeaderCellDef> User URL </th>
-        <td mat-cell *matCellDef="let element"> {{element.html_url}} </td>
-      </ng-container>
-
-      <!-- Avatar Column -->
-      <!-- <ng-container matColumnDef="avatar_url">
-        <th mat-header-cell *matHeaderCellDef> Avatar </th>
-        <td mat-cell *matCellDef="let element"><img [src] = "element.avatar_url" style="width: 100px; height:100px" alt="github logo"/> </td>
-      </ng-container> -->
-      <ng-container matColumnDef="avatar_url">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Avatar</mat-header-cell>
-        <mat-cell *matCellDef="let element">
-            <td *ngIf="element.isIdOdd"><img [src] = "element.avatar_url" style="width: 100px; height:100px" alt="github logo"/></td>
-            <td *ngIf="!element.isIdOdd"><p>{{element.avatar_url}}</p></td>
-        </mat-cell>
-    </ng-container>
-    
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5]"></mat-paginator>
-
+  <div class="row">
+    <app-user *ngFor="let user of usersList" [user]="user"></app-user>
   </div>
 </div>
 
-<app-user *ngFor="let user of usersList" [user]="user"></app-user>

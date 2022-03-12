@@ -1,8 +1,6 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { DataService } from '../services/data.service';
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {Subscription} from "rxjs";
+
 
 export interface UserObject {
   login: string;
@@ -31,86 +29,69 @@ export interface UserObject {
   templateUrl: './view-users.component.html',
   styleUrls: ['./view-users.component.scss']
 })
-export class ViewUsersComponent implements OnInit, OnDestroy {
-displayedColumns: string[] = ['id', 'login', 'html_url' ,'avatar_url'];
-dataSource : MatTableDataSource<UserObject>;
-private subscription: Subscription = new Subscription();
 
+export class ViewUsersComponent implements OnInit {
 usersList: UserObject[] = [];
-isAutomaticLoadingEnabled:boolean = true;
-loadingInterval:number = 0;
-perPageUsers:number = 10;
+isAutomaticLoadingEnabled:boolean = false; // to enable/disable automatic loading of data
+loadingInterval:number = 30000;  //30 seconds interval
+perPageUsers:number = 5;  //5 users per page
+automaticLoader:any;  // variable to hold the setInterval function
 
-  constructor(private dataService: DataService) {
-    this.dataSource = new MatTableDataSource<UserObject>();
-  }
+constructor(private dataService: DataService) {}
 
-public ToggleAutomaticLoading(){
+public toggleAutomaticLoading(){
   this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
-  this.loadingInterval = this.isAutomaticLoadingEnabled ? 0 : 3000;
+  this.determineAutomaticLoading();
 }
 
   ngOnInit(): void {
-        // this.dataService.getUsers(10).subscribe(data => {
-        //   this.dataSource = new MatTableDataSource<UserObject>(data);
-        // });
-
-   this.subscription = this.dataService.getUsersBatch(0,5).subscribe(data => {
-     console.log(data);
-     for(let user of data){
-       let isOdd = Math.abs(user.id % 2) ===1 ? true : false
-       if(isOdd){
-        user.isIdOdd = isOdd;
-       }
-     }
-      this.dataSource = new MatTableDataSource<UserObject>(data);
-      this.loadUserProfile(); //New Implementation
-   
-    });
+    this.loadUserProfile();
+    this.determineAutomaticLoading();
     }
 
-    //New Implementation
     public loadUserProfile(){
-      let since:any =localStorage.getItem('lastUserID');
-      if(since === null){
-        since = 0;
-      }
-      console.log("Since"+since);
+      let since:any = localStorage.getItem('lastUserID'); //get the last user id from local storage
+      if(since == null){ since = 0; } //if there is no last user id, set it to 0
+
     this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
       for(let user of data){
-        let isOdd = Math.abs(user.id % 2) ===1 ? true : false
+        let isOdd = Math.abs(user.id % 2) === 1  //returns true if odd
         if(isOdd){
          user.isIdOdd = isOdd;
         }
       }
         this.usersList = data;
-      let lastUserId = data[data.length-1].id.toString();
-      localStorage.setItem('lastUserID',lastUserId);
-      let n = localStorage.getItem('lastUserID');
-      console.log(n);
+        let lastUserId = data[data.length-1].id.toString(); //get the last user id
+        localStorage.setItem('lastUserID',lastUserId); //save the last user id
     });
     }
 
-    public loadMore(){
-      setTimeout(()=>{
+  public determineAutomaticLoading(){
+    if(this.isAutomaticLoadingEnabled){
+      this.automaticLoader = setInterval(()=>{
         this.loadUserProfile();
-       console.log('LOading More');
+        console.log('Users Loading');
       },this.loadingInterval);
+    }else(clearInterval(this.automaticLoader));
+  }
+
+
+  public loadMore(){
+      if(this.isAutomaticLoadingEnabled){
+        clearInterval(this.automaticLoader);
+        this.loadUserProfile();
+        this.determineAutomaticLoading();
+      }else{
+        setTimeout(()=>{
+          this.loadUserProfile();
+         console.log('Loading More...');
+        },this.loadingInterval);
+      }
     }
 
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
-  applyFilter(event: Event): void {
-    this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLocaleLowerCase();
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  reset() {
+    localStorage.removeItem('lastUserID'); //remove the last user id from local storage
+    this.loadUserProfile();
   }
 }

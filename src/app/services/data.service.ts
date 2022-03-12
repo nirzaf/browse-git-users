@@ -11,20 +11,6 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(numberOfUsers:number){
-    return this.http.get<UserObject[]>(this.apiUrl + '?per_page=' + numberOfUsers);
-  }
-
-  getUsersBatch(minimumId:number, numberOfUsers:number){
-    return this.http.get<UserObject[]>(this.apiUrl + '?since=' + minimumId + '&per_page=' + numberOfUsers);
-  }
-
-  getUser(username:string){
-    return this.http.get(`${this.apiUrl}/${username}`);
-  }
-
-  // <!------------------------------------------------!>
-
   getGitUsersProfile(since:number,perPage:number){
     return this.http.get<UserObject[]>(this.apiUrl + '?since=' + since + '&per_page=' + perPage);
   
