@@ -9,6 +9,16 @@
     </div>
   </div>
   <hr>
+  <div>
+    <div class="card" style="margin-left: 20px; margin-right:20px; background-color:lightgray;border:solid 2px">
+      <div class="row card-body" >
+        <div class="col-2">User Id</div>
+        <div class="col-3">Username</div>
+        <div class="col-3">User Link</div>
+        <div class="col-4">Avatar / URL</div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <app-user *ngFor="let user of usersList" [user]="user"></app-user>
   </div>
