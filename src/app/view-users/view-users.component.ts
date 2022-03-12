@@ -23,6 +23,7 @@ export interface UserObject {
   received_events_url: string;
   type: string;
   site_admin: boolean;
+  isIdOdd?:boolean;
 }
 
 @Component({
@@ -45,6 +46,13 @@ private subscription: Subscription = new Subscription();
         // });
 
    this.subscription = this.dataService.getUsersBatch(0,5).subscribe(data => {
+     console.log(data);
+     for(let user of data){
+       let isOdd = Math.abs(user.id % 2) ===1 ? true : false
+       if(isOdd){
+        user.isIdOdd = isOdd;
+       }
+     }
       this.dataSource = new MatTableDataSource<UserObject>(data);
     });
     }

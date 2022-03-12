@@ -26,10 +26,18 @@
       </ng-container>
 
       <!-- Avatar Column -->
-      <ng-container matColumnDef="avatar_url">
+      <!-- <ng-container matColumnDef="avatar_url">
         <th mat-header-cell *matHeaderCellDef> Avatar </th>
-        <td mat-cell *matCellDef="let element" ><img [src] = "element.avatar_url" style="width: 100px; height:100px" alt="github logo"/> </td>
-      </ng-container>
+        <td mat-cell *matCellDef="let element"><img [src] = "element.avatar_url" style="width: 100px; height:100px" alt="github logo"/> </td>
+      </ng-container> -->
+      <ng-container matColumnDef="avatar_url">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Avatar</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <td *ngIf="element.isIdOdd"><img [src] = "element.avatar_url" style="width: 100px; height:100px" alt="github logo"/></td>
+            <td *ngIf="!element.isIdOdd"><p>{{element.avatar_url}}</p></td>
+        </mat-cell>
+    </ng-container>
+    
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
