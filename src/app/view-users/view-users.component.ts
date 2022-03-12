@@ -36,9 +36,16 @@ displayedColumns: string[] = ['id', 'login', 'html_url' ,'avatar_url'];
 dataSource : MatTableDataSource<UserObject>;
 private subscription: Subscription = new Subscription();
 
+isAutomaticLoadingEnabled:boolean = true;
+
   constructor(private dataService: DataService) {
     this.dataSource = new MatTableDataSource<UserObject>();
   }
+
+public ToggleAutomaticLoading(){
+  this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
+  console.log(this.isAutomaticLoadingEnabled)
+}
 
   ngOnInit(): void {
         // this.dataService.getUsers(10).subscribe(data => {

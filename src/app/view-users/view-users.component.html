@@ -1,5 +1,14 @@
 <div class="container" fxFlex="25%" fxFlex.xs="100%" fxLayoutGap="25px" fxLayout.lt-xs="column">
   <h2 class="mat-display-1">Browse GitHub Users</h2>
+  <div class="row">
+    <div class="col-2">
+      <button class="btn btn-sm" (click)="ToggleAutomaticLoading()" [ngClass]="isAutomaticLoadingEnabled ? 'btn-danger' : 'btn-primary'">
+        {{isAutomaticLoadingEnabled ? 'Disable ': 'Enable '}} Automatic Loading
+      </button>
+    </div>
+    <div class="col-2"><button class="btn btn-sm btn-success">Load next Set</button></div>
+  </div>
+  <hr>
   <mat-form-field [style.width.%]="100" floatLabel="always" style="background-color: cornflowerblue">
     <input type="text" placeholder="Search Users" aria-label="Number" matInput (keyup)="applyFilter($event)">
   </mat-form-field>
