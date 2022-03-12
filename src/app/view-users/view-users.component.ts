@@ -68,16 +68,16 @@ public ToggleAutomaticLoading(){
     }
 
     public loadMore(){
-      setInterval(() => {
+      setTimeout(()=>{
         this.dataService.getUsersBatch(this.dataSource.data.length,5).subscribe(data => {
           console.log(data);
           for(let user of data){
             let isOdd = Math.abs(user.id % 2) ===1 ? true : false
             if(isOdd){
-              user.isIdOdd = isOdd;
+             user.isIdOdd = isOdd;
             }
           }
-          this.dataSource.data = this.dataSource.data.concat(data);
+          this.dataSource.data.push(...data);
         });
       },this.loadingInterval);
     }
