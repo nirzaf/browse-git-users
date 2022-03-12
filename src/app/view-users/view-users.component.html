@@ -1,6 +1,6 @@
 <div fxFlex="25%" fxFlex.xs="100%" fxLayoutGap="25px" fxLayout.lt-xs="column">
   <h2 class="mat-display-1">Search Users</h2>
-  <mat-form-field [style.width.%]="100" floatLabel="always" style="background-color:saddlebrown">
+  <mat-form-field [style.width.%]="100" floatLabel="always" style="background-color: cornflowerblue">
     <input type="text" placeholder="Search Users" aria-label="Number" matInput (keyup)="applyFilter($event)">
   </mat-form-field>
 
@@ -9,7 +9,12 @@
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <!-- Name Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> User Id </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+      <span><br><br></span>
+
       <ng-container matColumnDef="login">
         <th mat-header-cell *matHeaderCellDef> Username </th>
         <td mat-cell *matCellDef="let element"> {{element.login}} </td>
@@ -30,7 +35,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+    <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5]"></mat-paginator>
 
   </div>
 </div>

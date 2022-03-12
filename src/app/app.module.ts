@@ -8,7 +8,6 @@ import { ViewUsersComponent } from './view-users/view-users.component';
 import { HttpClientModule } from "@angular/common/http";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatTableModule } from "@angular/material/table";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import {MatInputModule} from "@angular/material/input";
 
@@ -24,7 +23,6 @@ import {MatInputModule} from "@angular/material/input";
     HttpClientModule,
     MatFormFieldModule,
     MatTableModule,
-    MatSlideToggleModule,
     MatPaginatorModule,
     MatInputModule
   ],

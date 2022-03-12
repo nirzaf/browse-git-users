@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { DataService } from '../services/data.service';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {Observable} from "rxjs";
 
 export interface UserObject {
   login: string;
@@ -31,21 +30,22 @@ export interface UserObject {
   styleUrls: ['./view-users.component.scss']
 })
 export class ViewUsersComponent implements OnInit {
-displayedColumns: string[] = ['login', 'html_url' ,'avatar_url'];
+displayedColumns: string[] = ['id', 'login', 'html_url' ,'avatar_url'];
 dataSource : MatTableDataSource<UserObject>;
-userData$: Observable<UserObject[]>;
 
 
   constructor(private dataService: DataService) {
-    this.userData$ = this.dataService.getUsers(10);
-    console.log("this.userData" , this.userData$);
     this.dataSource = new MatTableDataSource<UserObject>();
   }
 
   ngOnInit(): void {
-        this.dataService.getUsers(10).subscribe(data => {
-          this.dataSource = new MatTableDataSource<UserObject>(data);
-        });
+        // this.dataService.getUsers(10).subscribe(data => {
+        //   this.dataSource = new MatTableDataSource<UserObject>(data);
+        // });
+
+    this.dataService.getUsersBatch(0,5).subscribe(data => {
+      this.dataSource = new MatTableDataSource<UserObject>(data);
+    });
     }
 
 
