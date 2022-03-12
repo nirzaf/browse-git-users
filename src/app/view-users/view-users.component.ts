@@ -45,9 +45,7 @@ loadingInterval:number = 0;
 
 public ToggleAutomaticLoading(){
   this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
-  if(this.isAutomaticLoadingEnabled===false){
-   this.loadingInterval=3000;
-  }
+  this.loadingInterval = this.isAutomaticLoadingEnabled ? 0 : 3000;
 }
 
   ngOnInit(): void {
