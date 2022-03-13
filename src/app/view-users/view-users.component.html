@@ -1,10 +1,9 @@
-<div class="container" fxFlex="25%" fxFlex.xs="100%" fxLayoutGap="25px" fxLayout.lt-xs="column">
   <div class="row">
     <div class="btn-group" >
       <button style="margin-right:5px" class="btn btn-primary" (click)="toggleAutomaticLoading()" [ngClass]="isAutomaticLoadingEnabled ? 'btn-danger' : 'btn-primary'">
         {{isAutomaticLoadingEnabled ? 'Stop': 'Start'}} Auto Loading
       </button>
-      <button style="margin-right:5px" class="btn btn-primary btn-success" (click)="loadMore()">Load Next Batch</button>
+      <button style="margin-right:5px" class="btn btn-primary btn-success" (click)="loadNow()">Load Next Batch</button>
       <button class="btn btn-primary btn-warning" (click)="reset()">Reset</button>
     </div>
   </div>
@@ -15,12 +14,11 @@
         <div class="col-2">User Id</div>
         <div class="col-3">Username</div>
         <div class="col-3">User Link</div>
-        <div class="col-4">Avatar/URL</div>
+        <div class="col-4 d-flex justify-content-center">Avatar/URL</div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <app-user *ngFor="let user of usersList" [user]="user"></app-user>
+  <div class="row" style="padding:35px">
+    <app-user *ngFor="let user of userStream$ | async" [user]="user"></app-user>
   </div>
-</div>
 

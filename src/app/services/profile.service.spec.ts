@@ -1,20 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { DataService } from './data.service';
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {GitUsers, Users} from "../../../test-server/test.data";
-import {environment} from "../../environments/environment";
-import {HttpErrorResponse} from "@angular/common/http";
+import { ProfileService } from './profile.service';
+import { HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import { GitUsers, Users } from "../../../test-server/test.data";
+import { environment } from "../../environments/environment";
 
 describe('Testing DataService', () => {
-  let dataService: DataService,
+  let dataService: ProfileService,
   httpTestingController: HttpTestingController;
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [DataService]
+      providers: [ProfileService]
     }).compileComponents();
-    dataService = TestBed.inject(DataService);
+    dataService = TestBed.inject(ProfileService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
@@ -57,5 +56,4 @@ describe('Testing DataService', () => {
   afterEach(() => {
     httpTestingController.verify();
   });
-
 });

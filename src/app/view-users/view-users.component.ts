@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { DataService } from '../services/data.service';
-import {interval, Subscription} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {interval, Observable, Subscription} from 'rxjs';
+import {ProfileService} from "../services/profile.service";
 
 
 export interface UserObject {
@@ -31,14 +31,14 @@ export interface UserObject {
   styleUrls: ['./view-users.component.scss']
 })
 
-export class ViewUsersComponent implements OnInit,OnDestroy {
-usersList: UserObject[] = [];
+export class ViewUsersComponent implements OnInit {
 isAutomaticLoadingEnabled:boolean = false; // to enable/disable automatic loading of data
 perPageUsers:number = 5;  //5 users per page
 automaticLoader: Subscription = new Subscription();  // variable to hold the setInterval function
 period = interval(30000); // Auto loading interval
+userStream$: Observable<UserObject[]> = new Observable<UserObject[]>();
 
-constructor(private dataService: DataService) {}
+constructor(private profileService: ProfileService) {}
 
 public toggleAutomaticLoading(){
   this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
@@ -50,27 +50,8 @@ public toggleAutomaticLoading(){
      this.determineAutomaticLoading();
     }
 
-    public loadUserProfile(){
-      let since:any = localStorage.getItem('lastUserID'); //get the last user id from local storage
-      if(since == null){ since = 0; } //if there is no last user id, set it to 0
-
-     this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(users=>{
-           let lastUserId = users[users.length-1].id.toString(); //get the last user id
-           localStorage.setItem('lastUserID',lastUserId); //save the last user id
-      this.usersList = users;
-     })
-
-
-    // this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
-    //   data.forEach(user => {
-    //     let isOdd = Math.abs(user.id % 2) === 1  //returns true if odd
-    //     if(isOdd){ user.isIdOdd = isOdd; } this.usersList.push(user);
-    //   });
-    //
-    //   this.usersList = data;
-    //     let lastUserId = data[data.length-1].id.toString(); //get the last user id
-    //     localStorage.setItem('lastUserID',lastUserId); //save the last user id
-    // });
+  public loadUserProfile(){
+    this.userStream$  = this.profileService.getGitUsersProfile(this.profileService.getSince(),this.perPageUsers);
   }
 
   public determineAutomaticLoading(){
@@ -82,7 +63,7 @@ public toggleAutomaticLoading(){
       this.automaticLoader.unsubscribe();
     }
   }
-  public loadMore(){
+  public loadNow(){
       if(this.isAutomaticLoadingEnabled){
         this.automaticLoader.unsubscribe();
         this.loadUserProfile();
@@ -94,10 +75,7 @@ public toggleAutomaticLoading(){
     }
 
   reset() {
-    localStorage.removeItem('lastUserID'); //remove the last user id from local storage
+    this.profileService.reset();
     this.loadUserProfile();
-  }
-  ngOnDestroy(): void {
-    this.automaticLoader.unsubscribe();
   }
 }
