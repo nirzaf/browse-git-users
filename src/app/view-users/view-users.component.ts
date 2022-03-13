@@ -33,7 +33,6 @@ export interface UserObject {
 
 export class ViewUsersComponent implements OnInit {
 isAutomaticLoadingEnabled:boolean = false; // to enable/disable automatic loading of data
-perPageUsers:number = 5;  //5 users per page
 automaticLoader: Subscription = new Subscription();  // variable to hold the setInterval function
 period = interval(30000); // Auto loading interval
 userStream$: Observable<UserObject[]> = new Observable<UserObject[]>();
@@ -51,7 +50,7 @@ public toggleAutomaticLoading(){
     }
 
   public loadUserProfile(){
-    this.userStream$  = this.profileService.getGitUsersProfile(this.profileService.getSince(),this.perPageUsers);
+    this.userStream$  = this.profileService.getGitUsersProfile(this.profileService.getSince(),this.profileService.getPagesPerUsers());
   }
 
   public determineAutomaticLoading(){
@@ -63,19 +62,18 @@ public toggleAutomaticLoading(){
       this.automaticLoader.unsubscribe();
     }
   }
+
   public loadNow(){
       if(this.isAutomaticLoadingEnabled){
         this.automaticLoader.unsubscribe();
-        this.loadUserProfile();
-        this.determineAutomaticLoading();
+        this.ngOnInit();
       }else{
-        this.loadUserProfile();
-        this.determineAutomaticLoading();
+        this.ngOnInit();
       }
     }
 
   reset() {
     this.profileService.reset();
-    this.loadUserProfile();
+    this.ngOnInit();
   }
 }

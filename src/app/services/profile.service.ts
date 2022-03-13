@@ -9,6 +9,7 @@ import {map} from "rxjs/operators";
 })
 export class ProfileService {
   apiUrl = environment.baseUrl;
+  private pagesPerUsers = 5;
 
   constructor(private http: HttpClient) { }
 
@@ -33,9 +34,12 @@ export class ProfileService {
     return since;
   }
 
+  getPagesPerUsers(){
+    return this.pagesPerUsers;
+  }
+
   reset(){
       localStorage.removeItem('lastUserID'); //remove the last user id from local storage
-      //this.loadUserProfile();
   }
 
 }
