@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { DataService } from '../services/data.service';
+import {Observable, Subscription} from "rxjs";
 
 
 export interface UserObject {
@@ -36,6 +37,7 @@ isAutomaticLoadingEnabled:boolean = false; // to enable/disable automatic loadin
 loadingInterval:number = 30000;  //30 seconds interval
 perPageUsers:number = 5;  //5 users per page
 automaticLoader:any;  // variable to hold the setInterval function
+users$:Subscription = new Subscription;
 
 constructor(private dataService: DataService) {}
 
@@ -53,13 +55,20 @@ public toggleAutomaticLoading(){
       let since:any = localStorage.getItem('lastUserID'); //get the last user id from local storage
       if(since == null){ since = 0; } //if there is no last user id, set it to 0
 
-    this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
-      for(let user of data){
+    this.users$ = this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
+
+      data.forEach(user => {
         let isOdd = Math.abs(user.id % 2) === 1  //returns true if odd
-        if(isOdd){
-         user.isIdOdd = isOdd;
-        }
-      }
+        if(isOdd){ user.isIdOdd = isOdd; }
+        this.usersList.push(user);
+      });
+
+      // for(let user of data){
+      //   let isOdd = Math.abs(user.id % 2) === 1  //returns true if odd
+      //   if(isOdd){
+      //    user.isIdOdd = isOdd;
+      //   }
+      // }
         this.usersList = data;
         let lastUserId = data[data.length-1].id.toString(); //get the last user id
         localStorage.setItem('lastUserID',lastUserId); //save the last user id
