@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { DataService } from '../services/data.service';
-import {interval, Observable, Subscription} from 'rxjs';
+import {interval, Subscription} from 'rxjs';
 
 
 export interface UserObject {
@@ -34,14 +34,11 @@ export interface UserObject {
 export class ViewUsersComponent implements OnInit,OnDestroy {
 usersList: UserObject[] = [];
 isAutomaticLoadingEnabled:boolean = false; // to enable/disable automatic loading of data
-loadingInterval:number = 30000;  //30 seconds interval
 perPageUsers:number = 5;  //5 users per page
 automaticLoader: Subscription = new Subscription();  // variable to hold the setInterval function
-period = interval(30000);
+period = interval(30000); // Auto loading interval
 
 constructor(private dataService: DataService) {}
-
-
 
 public toggleAutomaticLoading(){
   this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
@@ -58,18 +55,16 @@ public toggleAutomaticLoading(){
       if(since == null){ since = 0; } //if there is no last user id, set it to 0
 
     this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
-      for(let user of data){
+      data.forEach(user => {
         let isOdd = Math.abs(user.id % 2) === 1  //returns true if odd
-        if(isOdd){
-         user.isIdOdd = isOdd;
-        }
-      }
-        this.usersList = data;
+        if(isOdd){ user.isIdOdd = isOdd; } this.usersList.push(user);
+      });
+
+      this.usersList = data;
         let lastUserId = data[data.length-1].id.toString(); //get the last user id
         localStorage.setItem('lastUserID',lastUserId); //save the last user id
     });
-    }
-
+  }
 
   public determineAutomaticLoading(){
     if(this.isAutomaticLoadingEnabled){
@@ -82,15 +77,12 @@ public toggleAutomaticLoading(){
   }
   public loadMore(){
       if(this.isAutomaticLoadingEnabled){
-        //clearInterval(this.automaticLoader);
-        this.automaticLoader?.unsubscribe();
+        this.automaticLoader.unsubscribe();
         this.loadUserProfile();
         this.determineAutomaticLoading();
       }else{
-        setTimeout(()=>{
-          this.loadUserProfile();
-         console.log('Loading More...');
-        },this.loadingInterval);
+        this.loadUserProfile();
+        this.determineAutomaticLoading();
       }
     }
 
