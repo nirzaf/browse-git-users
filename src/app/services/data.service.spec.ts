@@ -3,8 +3,9 @@ import { DataService } from './data.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {GitUsers, Users} from "../../../test-server/test.data";
 import {environment} from "../../environments/environment";
+import {HttpErrorResponse} from "@angular/common/http";
 
-describe('DataService', () => {
+describe('Testing DataService', () => {
   let dataService: DataService,
   httpTestingController: HttpTestingController;
 
@@ -43,6 +44,7 @@ describe('DataService', () => {
   it('should fetch user url `https://api.github.com/users/mojombo` for id=1', () => {
     dataService.getGitUsersProfile(0, 5).subscribe(
       data => {
+        console.log(data);
         expect(data[0].id).toBe(1);
         expect(data[0].avatar_url).toBe(environment.baseUrl+'/mojombo');
       });
@@ -51,4 +53,9 @@ describe('DataService', () => {
     expect(req.request.method).toEqual('GET');
     req.flush({ "payload":Object.values(Users)})
   });
+
+  afterEach(() => {
+    httpTestingController.verify();
+  });
+
 });
