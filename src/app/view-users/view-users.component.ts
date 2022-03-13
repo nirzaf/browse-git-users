@@ -66,6 +66,7 @@ public toggleAutomaticLoading(){
     });
     }
 
+
   public determineAutomaticLoading(){
     if(this.isAutomaticLoadingEnabled){
       this.automaticLoader = setInterval(()=>{
