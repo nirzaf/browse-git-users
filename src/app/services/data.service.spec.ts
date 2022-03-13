@@ -1,16 +1,55 @@
 import { TestBed } from '@angular/core/testing';
-
 import { DataService } from './data.service';
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {GitUsers, Users} from "../../../Server/test.data";
+import {environment} from "../../environments/environment";
 
 describe('DataService', () => {
-  let service: DataService;
+  let dataService: DataService,
+  httpTestingController: HttpTestingController;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DataService);
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [DataService]
+    }).compileComponents();
+    dataService = TestBed.inject(DataService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('should fetch user `mojombo` for id=1', () => {
+    dataService.getGitUsersProfile(0, 5).subscribe(
+      data => {
+        const gitUser = data.find(c => c.id == 1);
+        expect(data[0].login).toBe('mojombo');
+      });
+
+    const req = httpTestingController.expectOne('https://api.github.com/users?since=0&per_page=5');
+    expect(req.request.method).toEqual('GET');
+    req.flush({ "payload":Object.values(Users)})
+  });
+
+  it('should fetch user avatar_url `https://avatars.githubusercontent.com/u/2?v=4` for id=1', () => {
+    dataService.getGitUsersProfile(0, 5).subscribe(
+      data => {
+        expect(data).toBeTruthy();
+        expect(data[0].avatar_url).toBe('https://avatars.githubusercontent.com/u/2?v=4');
+      });
+
+    const req = httpTestingController.expectOne('https://api.github.com/users?since=0&per_page=5');
+    expect(req.request.method).toEqual('GET');
+    req.flush({ "payload":Object.values(Users)})
+  });
+
+  it('should fetch user url `https://api.github.com/users/mojombo` for id=1', () => {
+    dataService.getGitUsersProfile(0, 5).subscribe(
+      data => {
+        expect(data[0].id).toBe(1);
+        expect(data[0].avatar_url).toBe(environment.baseUrl+'/mojombo');
+      });
+
+    const req = httpTestingController.expectOne('https://api.github.com/users?since=0&per_page=5');
+    expect(req.request.method).toEqual('GET');
+    req.flush({ "payload":Object.values(Users)})
   });
 });
