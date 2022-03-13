@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "70249459-c2c4-4979-97c3-7b95c545d5b2"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -104,6 +107,37 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "browse-git-users:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "browse-git-users:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "browse-git-users:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "browse-git-users:serve:production"
+            }
           }
         }
       }

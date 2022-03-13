@@ -1,0 +1,14 @@
+<div class="mat-card">
+  <div class="row card-body" style="border:solid 1px; border-radius: 5px">
+    <div class="col-2">{{user.id}}</div>
+    <div class="col-3">{{user.login}}</div>
+    <div class="col-3">{{user.html_url}}</div>
+    <div class="col-4 d-flex justify-content-center" *ngIf="user.isIdOdd"><img [src]="user.avatar_url" style="width: 100px; height:100px;align-content:center;" alt="Avatar"></div>
+    <div class="col-4 d-flex justify-content-center" *ngIf="!user.isIdOdd">
+      <div class="alert alert-primary" role="alert">
+        {{user.avatar_url}}
+      </div>
+    </div>
+  </div>
+</div>
+

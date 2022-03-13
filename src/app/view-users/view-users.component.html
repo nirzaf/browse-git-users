@@ -1,40 +1,24 @@
-<div class="container" fxFlex="25%" fxFlex.xs="100%" fxLayoutGap="25px" fxLayout.lt-xs="column">
-  <h2 class="mat-display-1">Browse GitHub Users</h2>
-  <mat-form-field [style.width.%]="100" floatLabel="always" style="background-color: cornflowerblue">
-    <input type="text" placeholder="Search Users" aria-label="Number" matInput (keyup)="applyFilter($event)">
-  </mat-form-field>
-
-  <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="column"  fxLayout.lt-sm="column"   fxLayoutGap="15px">
-
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <!-- Id Column -->
-      <ng-container matColumnDef="id" style="margin-left: 100px">
-        <th mat-header-cell *matHeaderCellDef> User Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
-
-      <!-- Username Column -->
-      <ng-container matColumnDef="login">
-        <th mat-header-cell *matHeaderCellDef > Username </th>
-        <td mat-cell *matCellDef="let element"> {{element.login}} </td>
-      </ng-container>
-
-      <!-- User URL Column -->
-      <ng-container matColumnDef="html_url">
-        <th mat-header-cell *matHeaderCellDef> User URL </th>
-        <td mat-cell *matCellDef="let element"> {{element.html_url}} </td>
-      </ng-container>
-
-      <!-- Avatar Column -->
-      <ng-container matColumnDef="avatar_url">
-        <th mat-header-cell *matHeaderCellDef> Avatar </th>
-        <td mat-cell *matCellDef="let element" ><img [src] = "element.avatar_url" style="width: 100px; height:100px" alt="github logo"/> </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5]"></mat-paginator>
-
+  <div class="row">
+    <div class="btn-group" >
+      <button style="margin-right:5px" class="btn btn-primary" (click)="toggleAutomaticLoading()" [ngClass]="isAutomaticLoadingEnabled ? 'btn-danger' : 'btn-primary'">
+        {{isAutomaticLoadingEnabled ? 'Stop': 'Start'}} Auto Loading
+      </button>
+      <button style="margin-right:5px" class="btn btn-primary btn-success" (click)="loadNow()">Load Next Batch</button>
+      <button class="btn btn-primary btn-warning" (click)="reset()">Reset</button>
+    </div>
   </div>
-</div>
+  <hr>
+  <div>
+    <div class="card" style="margin-left: 20px; margin-right:20px; background-color:lightgray;border:solid 2px">
+      <div class="row card-body" >
+        <div class="col-2">User Id</div>
+        <div class="col-3">Username</div>
+        <div class="col-3">User Link</div>
+        <div class="col-4 d-flex justify-content-center">Avatar/URL</div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding:35px">
+    <app-user *ngFor="let user of userStream$ | async" [user]="user"></app-user>
+  </div>
+

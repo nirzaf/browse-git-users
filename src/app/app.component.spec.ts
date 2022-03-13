@@ -1,8 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed} from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -23,13 +24,6 @@ describe('AppComponent', () => {
   it(`should have as title 'browse-git-users'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('browse-git-users');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('browse-git-users app is running!');
+    expect(app.title).toContain('browse-git-users');
   });
 });

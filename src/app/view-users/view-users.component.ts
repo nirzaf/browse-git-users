@@ -1,8 +1,7 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { DataService } from '../services/data.service';
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {Subscription} from "rxjs";
+import {Component, OnInit} from '@angular/core';
+import {interval, Observable, Subscription} from 'rxjs';
+import {ProfileService} from "../services/profile.service";
+
 
 export interface UserObject {
   login: string;
@@ -23,6 +22,7 @@ export interface UserObject {
   received_events_url: string;
   type: string;
   site_admin: boolean;
+  isIdOdd?:boolean;
 }
 
 @Component({
@@ -30,38 +30,50 @@ export interface UserObject {
   templateUrl: './view-users.component.html',
   styleUrls: ['./view-users.component.scss']
 })
-export class ViewUsersComponent implements OnInit, OnDestroy {
-displayedColumns: string[] = ['id', 'login', 'html_url' ,'avatar_url'];
-dataSource : MatTableDataSource<UserObject>;
-private subscription: Subscription = new Subscription();
 
-  constructor(private dataService: DataService) {
-    this.dataSource = new MatTableDataSource<UserObject>();
-  }
+export class ViewUsersComponent implements OnInit {
+isAutomaticLoadingEnabled:boolean = false; // to enable/disable automatic loading of data
+automaticLoader: Subscription = new Subscription();  // variable to hold the setInterval function
+period = interval(30000); // Auto loading interval
+userStream$: Observable<UserObject[]> = new Observable<UserObject[]>();
+
+constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
-        // this.dataService.getUsers(10).subscribe(data => {
-        //   this.dataSource = new MatTableDataSource<UserObject>(data);
-        // });
-
-   this.subscription = this.dataService.getUsersBatch(0,5).subscribe(data => {
-      this.dataSource = new MatTableDataSource<UserObject>(data);
-    });
+     this.loadUserProfile();
+     this.determineAutomaticLoading();
     }
 
-
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  loadUserProfile(){
+    this.userStream$  = this.profileService.getGitUserProfiles(this.profileService.getSince(),this.profileService.getPagesPerUsers());
   }
 
-  applyFilter(event: Event): void {
-    this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLocaleLowerCase();
+  toggleAutomaticLoading(){
+    this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
+    this.determineAutomaticLoading();
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  determineAutomaticLoading(){
+    if(this.isAutomaticLoadingEnabled){
+      this.automaticLoader = this.period.subscribe(()=>{
+        this.loadUserProfile();
+      });
+    }else{
+      this.automaticLoader.unsubscribe();
+    }
+  }
+
+  loadNow(){
+      if(this.isAutomaticLoadingEnabled){
+        this.automaticLoader.unsubscribe();
+        this.ngOnInit();
+      }else{
+        this.ngOnInit();
+      }
+    }
+
+  reset() {
+    this.profileService.reset();
+    this.ngOnInit();
   }
 }
