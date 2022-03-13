@@ -54,16 +54,21 @@ public toggleAutomaticLoading(){
       let since:any = localStorage.getItem('lastUserID'); //get the last user id from local storage
       if(since == null){ since = 0; } //if there is no last user id, set it to 0
 
-    this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
-      data.forEach(user => {
-        let isOdd = Math.abs(user.id % 2) === 1  //returns true if odd
-        if(isOdd){ user.isIdOdd = isOdd; } this.usersList.push(user);
-      });
+     this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(users=>{
+      this.usersList = users;
+     })
 
-      this.usersList = data;
-        let lastUserId = data[data.length-1].id.toString(); //get the last user id
-        localStorage.setItem('lastUserID',lastUserId); //save the last user id
-    });
+
+    // this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(data => {
+    //   data.forEach(user => {
+    //     let isOdd = Math.abs(user.id % 2) === 1  //returns true if odd
+    //     if(isOdd){ user.isIdOdd = isOdd; } this.usersList.push(user);
+    //   });
+    //
+    //   this.usersList = data;
+    //     let lastUserId = data[data.length-1].id.toString(); //get the last user id
+    //     localStorage.setItem('lastUserID',lastUserId); //save the last user id
+    // });
   }
 
   public determineAutomaticLoading(){
