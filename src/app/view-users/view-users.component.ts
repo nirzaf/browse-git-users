@@ -55,6 +55,8 @@ public toggleAutomaticLoading(){
       if(since == null){ since = 0; } //if there is no last user id, set it to 0
 
      this.dataService.getGitUsersProfile(since,this.perPageUsers).subscribe(users=>{
+           let lastUserId = users[users.length-1].id.toString(); //get the last user id
+           localStorage.setItem('lastUserID',lastUserId); //save the last user id
       this.usersList = users;
      })
 
