@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { DataService } from '../services/data.service';
+import {interval, Observable, Subscription} from 'rxjs';
 
 
 export interface UserObject {
@@ -30,14 +31,17 @@ export interface UserObject {
   styleUrls: ['./view-users.component.scss']
 })
 
-export class ViewUsersComponent implements OnInit {
+export class ViewUsersComponent implements OnInit,OnDestroy {
 usersList: UserObject[] = [];
 isAutomaticLoadingEnabled:boolean = false; // to enable/disable automatic loading of data
 loadingInterval:number = 30000;  //30 seconds interval
 perPageUsers:number = 5;  //5 users per page
-automaticLoader:any;  // variable to hold the setInterval function
+automaticLoader: Subscription = new Subscription();  // variable to hold the setInterval function
+period = interval(30000);
 
 constructor(private dataService: DataService) {}
+
+
 
 public toggleAutomaticLoading(){
   this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
@@ -45,8 +49,8 @@ public toggleAutomaticLoading(){
 }
 
   ngOnInit(): void {
-    this.loadUserProfile();
-    this.determineAutomaticLoading();
+     this.loadUserProfile();
+     this.determineAutomaticLoading();
     }
 
     public loadUserProfile(){
@@ -69,17 +73,17 @@ public toggleAutomaticLoading(){
 
   public determineAutomaticLoading(){
     if(this.isAutomaticLoadingEnabled){
-      this.automaticLoader = setInterval(()=>{
+      this.automaticLoader = this.period.subscribe(()=>{
         this.loadUserProfile();
-        console.log('Users Loading');
-      },this.loadingInterval);
-    }else(clearInterval(this.automaticLoader));
+      });
+    }else{
+      this.automaticLoader.unsubscribe();
+    }
   }
-
-
   public loadMore(){
       if(this.isAutomaticLoadingEnabled){
-        clearInterval(this.automaticLoader);
+        //clearInterval(this.automaticLoader);
+        this.automaticLoader?.unsubscribe();
         this.loadUserProfile();
         this.determineAutomaticLoading();
       }else{
@@ -90,9 +94,11 @@ public toggleAutomaticLoading(){
       }
     }
 
-
   reset() {
     localStorage.removeItem('lastUserID'); //remove the last user id from local storage
     this.loadUserProfile();
+  }
+  ngOnDestroy(): void {
+    this.automaticLoader.unsubscribe();
   }
 }
