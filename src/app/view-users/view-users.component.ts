@@ -39,21 +39,21 @@ userStream$: Observable<UserObject[]> = new Observable<UserObject[]>();
 
 constructor(private profileService: ProfileService) {}
 
-public toggleAutomaticLoading(){
-  this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
-  this.determineAutomaticLoading();
-}
-
   ngOnInit(): void {
      this.loadUserProfile();
      this.determineAutomaticLoading();
     }
 
-  public loadUserProfile(){
+  loadUserProfile(){
     this.userStream$  = this.profileService.getGitUsersProfile(this.profileService.getSince(),this.profileService.getPagesPerUsers());
   }
 
-  public determineAutomaticLoading(){
+  toggleAutomaticLoading(){
+    this.isAutomaticLoadingEnabled = !this.isAutomaticLoadingEnabled;
+    this.determineAutomaticLoading();
+  }
+
+  determineAutomaticLoading(){
     if(this.isAutomaticLoadingEnabled){
       this.automaticLoader = this.period.subscribe(()=>{
         this.loadUserProfile();
@@ -63,7 +63,7 @@ public toggleAutomaticLoading(){
     }
   }
 
-  public loadNow(){
+  loadNow(){
       if(this.isAutomaticLoadingEnabled){
         this.automaticLoader.unsubscribe();
         this.ngOnInit();
