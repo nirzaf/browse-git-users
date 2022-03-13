@@ -3,8 +3,7 @@ import { UserObject } from '../view-users/view-users.component';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  templateUrl: './user.component.html'
 })
 export class UserComponent {
   @Input()user!:UserObject;
