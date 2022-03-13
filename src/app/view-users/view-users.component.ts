@@ -45,7 +45,7 @@ constructor(private profileService: ProfileService) {}
     }
 
   loadUserProfile(){
-    this.userStream$  = this.profileService.getGitUsersProfile(this.profileService.getSince(),this.profileService.getPagesPerUsers());
+    this.userStream$  = this.profileService.getGitUserProfiles(this.profileService.getSince(),this.profileService.getPagesPerUsers());
   }
 
   toggleAutomaticLoading(){

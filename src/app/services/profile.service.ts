@@ -13,7 +13,7 @@ export class ProfileService {
 
   constructor(private http: HttpClient) { }
 
-  getGitUsersProfile(since:number,perPage:number){
+  getGitUserProfiles(since:number, perPage:number){
      return this.http.get<UserObject[]>(this.apiUrl + '?since=' + since + '&per_page=' + perPage)
        .pipe(map(data=>{
          const users:UserObject[] = [];

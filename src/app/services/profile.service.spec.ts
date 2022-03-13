@@ -5,7 +5,7 @@ import { GitUsers, Users } from "../../../test-server/test.data";
 import { environment } from "../../environments/environment";
 
 describe('Testing DataService', () => {
-  let dataService: ProfileService,
+  let profileService: ProfileService,
   httpTestingController: HttpTestingController;
 
   beforeEach(async() => {
@@ -13,12 +13,12 @@ describe('Testing DataService', () => {
       imports: [HttpClientTestingModule],
       providers: [ProfileService]
     }).compileComponents();
-    dataService = TestBed.inject(ProfileService);
+    profileService = TestBed.inject(ProfileService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should fetch user `mojombo` for id=1', () => {
-    dataService.getGitUsersProfile(0, 5).subscribe(
+    profileService.getGitUserProfiles(0, 5).subscribe(
       data => {
         expect(data[0].login).toBe('mojombo');
       });
@@ -29,7 +29,7 @@ describe('Testing DataService', () => {
   });
 
   it('should fetch user avatar_url `https://avatars.githubusercontent.com/u/2?v=4` for id=1', () => {
-    dataService.getGitUsersProfile(0, 5).subscribe(
+    profileService.getGitUserProfiles(0, 5).subscribe(
       data => {
         expect(data).toBeTruthy();
         expect(data[0].avatar_url).toBe('https://avatars.githubusercontent.com/u/2?v=4');
@@ -41,7 +41,7 @@ describe('Testing DataService', () => {
   });
 
   it('should fetch user url `https://api.github.com/users/mojombo` for id=1', () => {
-    dataService.getGitUsersProfile(0, 5).subscribe(
+    profileService.getGitUserProfiles(0, 5).subscribe(
       data => {
         console.log(data);
         expect(data[0].id).toBe(1);
