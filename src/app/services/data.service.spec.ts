@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DataService } from './data.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {GitUsers, Users} from "../../../Server/test.data";
+import {GitUsers, Users} from "../../../test-server/test.data";
 import {environment} from "../../environments/environment";
 
 describe('DataService', () => {
@@ -20,13 +20,12 @@ describe('DataService', () => {
   it('should fetch user `mojombo` for id=1', () => {
     dataService.getGitUsersProfile(0, 5).subscribe(
       data => {
-        const gitUser = data.find(c => c.id == 1);
         expect(data[0].login).toBe('mojombo');
       });
 
     const req = httpTestingController.expectOne('https://api.github.com/users?since=0&per_page=5');
     expect(req.request.method).toEqual('GET');
-    req.flush({ "payload":Object.values(Users)})
+    req.flush({ "payload":Object.values(GitUsers)})
   });
 
   it('should fetch user avatar_url `https://avatars.githubusercontent.com/u/2?v=4` for id=1', () => {
@@ -38,7 +37,7 @@ describe('DataService', () => {
 
     const req = httpTestingController.expectOne('https://api.github.com/users?since=0&per_page=5');
     expect(req.request.method).toEqual('GET');
-    req.flush({ "payload":Object.values(Users)})
+    req.flush({ "payload":Object.values(GitUsers)})
   });
 
   it('should fetch user url `https://api.github.com/users/mojombo` for id=1', () => {
