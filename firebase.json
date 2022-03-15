@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/browse-git-users",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
