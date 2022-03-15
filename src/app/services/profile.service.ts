@@ -33,7 +33,8 @@ export class ProfileService {
   }
 
   getSince(){
-    return this.getStorageValue('lastUserID')  == null? 0: this.getStorageValue('lastUserID') ; //if there is no last user id, set it to 0
+    let since:any = this.getStorageValue('lastUserID');
+    return since == null? 0: since; //if there is no last user id, set it to 0
   }
 
   getPagesPerUsers(){
