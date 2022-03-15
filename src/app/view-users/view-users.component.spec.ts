@@ -1,9 +1,8 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import { ProfileService } from '../services/profile.service';
 import { ViewUsersComponent } from './view-users.component';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import { Observable, Subscription } from 'rxjs';
-import {By} from "@angular/platform-browser";
 
 describe('ViewUsersComponent', () => {
   let component: ViewUsersComponent;
