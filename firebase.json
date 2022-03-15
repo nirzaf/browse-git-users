@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/browse-git-users",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+[debug] [2022-03-15T14:48:47.894Z] ----------------------------------------------------------------------
+[debug] [2022-03-15T14:48:47.896Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Fazrin\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-03-15T14:48:47.897Z] CLI Version:   10.2.2
+[debug] [2022-03-15T14:48:47.897Z] Platform:      win32
+[debug] [2022-03-15T14:48:47.897Z] Node Version:  v16.13.0
+[debug] [2022-03-15T14:48:47.898Z] Time:          Tue Mar 15 2022 20:18:47 GMT+0530 (India Standard Time)
+[debug] [2022-03-15T14:48:47.898Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-03-15T14:48:47.952Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-03-15T14:48:47.953Z] > authorizing via signed-in user (nirzaf@gmail.com)
+[debug] [2022-03-15T14:48:47.953Z] [iam] checking project browse-git-users for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-03-15T14:48:47.954Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/browse-git-users:testIamPermissions [none]
+[debug] [2022-03-15T14:48:47.955Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/browse-git-users:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-03-15T14:48:49.699Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/browse-git-users:testIamPermissions 200
+[debug] [2022-03-15T14:48:49.699Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/browse-git-users:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-03-15T14:48:49.699Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/browse-git-users [none]
+[debug] [2022-03-15T14:48:50.303Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/browse-git-users 200
+[debug] [2022-03-15T14:48:50.303Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/browse-git-users {"projectId":"browse-git-users","projectNumber":"519095915708","displayName":"browse-git-users","name":"projects/browse-git-users","resources":{"hostingSite":"browse-git-users"},"state":"ACTIVE"}
+[info] 
+[info] === Deploying to 'browse-git-users'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2022-03-15T14:48:50.307Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/browse-git-users [none]
+[debug] [2022-03-15T14:48:50.820Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/browse-git-users 200
+[debug] [2022-03-15T14:48:50.820Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/browse-git-users {"projectId":"browse-git-users","projectNumber":"519095915708","displayName":"browse-git-users","name":"projects/browse-git-users","resources":{"hostingSite":"browse-git-users"},"state":"ACTIVE"}
+[debug] [2022-03-15T14:48:50.822Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions [none]
+[debug] [2022-03-15T14:48:50.822Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions {"config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2022-03-15T14:48:52.928Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions 200
+[debug] [2022-03-15T14:48:52.928Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions {"name":"projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[browse-git-users]: beginning deploy... 
+[info] i  hosting[browse-git-users]: found 8 files in dist/browse-git-users 
+[debug] [2022-03-15T14:48:52.936Z] [hosting] hash cache [ZGlzdFxicm93c2UtZ2l0LXVzZXJz] not populated
+[debug] [2022-03-15T14:48:52.958Z] [hosting] hash cache [ZGlzdFxicm93c2UtZ2l0LXVzZXJz] stored for 8 files
+[debug] [2022-03-15T14:48:52.959Z] [hosting][hash queue][FINAL] {"max":19,"min":4,"avg":7.125,"active":0,"complete":8,"success":8,"errored":0,"retried":0,"total":8,"elapsed":23}
+[debug] [2022-03-15T14:48:52.959Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c:populateFiles [none]
+[debug] [2022-03-15T14:48:52.959Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c:populateFiles {"files":{"/favicon.ico":"2c19690e9587bae12f419b34d2edeecc76808099540a9c9f4ea6194116cfc8f7","/404.html":"daa499dd96d8229e73235345702ba32f0793f0c8e5c0d30e40e37a5872be57aa","/index.html":"6e0c7ea285b0b958fa4a3f3b3bb89089c5538a26bd2c6741f9b5416fc0cf9e1b","/3rdpartylicenses.txt":"48ebdedf77066b74358b000ca041b5ea761bf5b14fd37a6718a4a0a880b1af56","/runtime.4999161b512eda9d.js":"cf4ff1c4ca73cf8428d5821906a11c367df959e255ba8ec37a62188abca3aae4","/polyfills.e0a0aafaa57c5a9f.js":"16893b8589bda281bf7cf1db4624258bee021e893b89c02c953fd53220f1d25e","/styles.0cf0cc55a678497f.css":"9f146088a73c71222e6a34011665e6b75eef241f2a8107c80e2ec6deb0087b05","/main.90a6e618d9d432f9.js":"84af33da25b3906e28ee910bd23447e3d0cf3699fcd822ef624200f69ce7e0a5"}}
+[debug] [2022-03-15T14:48:54.851Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c:populateFiles 200
+[debug] [2022-03-15T14:48:54.852Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c:populateFiles {"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/browse-git-users/versions/b7a0c48349cc0f3c/files"}
+[debug] [2022-03-15T14:48:54.852Z] [hosting][populate queue][FINAL] {"max":1895,"min":1895,"avg":1895,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1895}
+[debug] [2022-03-15T14:48:54.852Z] [hosting] uploads queued: 0
+[debug] [2022-03-15T14:48:54.852Z] [hosting][upload queue][FINAL] {"max":0,"min":9999999999,"avg":0,"active":0,"complete":0,"success":0,"errored":0,"retried":0,"total":0,"elapsed":1647355734852}
+[info] +  hosting[browse-git-users]: file upload complete 
+[debug] [2022-03-15T14:48:54.853Z] [hosting] deploy completed after 1925ms
+[debug] [2022-03-15T14:48:54.856Z] [
+  {
+    "config": {
+      "public": "dist/browse-git-users",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "browse-git-users"
+    },
+    "site": "browse-git-users",
+    "version": "projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c"
+  }
+]
+[info] i  hosting[browse-git-users]: finalizing version... 
+[debug] [2022-03-15T14:48:54.857Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c updateMask=status
+[debug] [2022-03-15T14:48:54.857Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/519095915708/sites/browse-git-users/versions/b7a0c48349cc0f3c {"status":"FINALIZED"}
